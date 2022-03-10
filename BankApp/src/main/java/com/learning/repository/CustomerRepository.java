@@ -3,12 +3,13 @@
  */
 package com.learning.repository;
 
+import com.learning.entity.Customer;
+
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-import com.learning.dto.User;
 
 @Repository
-public interface UserRepository extends JpaRepository<User, Long> {
+public interface CustomerRepository extends JpaRepository<Customer, Long> {
 	public boolean existsById(long id);
 }

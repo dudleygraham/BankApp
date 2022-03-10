@@ -6,51 +6,52 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.learning.dto.User;
-import com.learning.repository.UserRepository;
-import com.learning.service.UserService;
+import com.learning.entity.Customer;
+import com.learning.repository.CustomerRepository;
+
+import com.learning.service.CustomerService;
 @Service
-public class UserServiceImpl implements UserService {
+public class CustomerServiceImpl implements CustomerService {
 	@Autowired
-	UserRepository repo;
+	CustomerRepository repo;
 	@Override
-	public User addUser(User user) {
+	public Customer addCustomer(Customer user) {
 		// TODO Auto-generated method stub
 		return repo.save(user);
 	}
 
 	@Override
-	public Optional<User> getUserById(Long id) {
+	public Optional<Customer> getCustomerById(Long id) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public List<User> getAllUsers() {
+	public List<Customer> getAllCustomers() {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public String deleteUserById(Long id) {
+	public String deleteCustomerById(Long id) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public User updateUser(User user) {
+	public Customer updateCustomer(Customer customer) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public List<User> getAllUsersAscOrder() {
+	public List<Customer> getAllCustomersAscOrder() {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public List<User> getAllUsersDescOrder() {
+	public List<Customer> getAllCustomersDescOrder() {
 		// TODO Auto-generated method stub
 		return null;
 	}

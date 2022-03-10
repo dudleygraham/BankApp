@@ -1,37 +1,35 @@
-package com.learning.dto;
+package com.learning.payload.response;
 
-import javax.persistence.Entity;
+import java.time.LocalDate;
+import java.util.Set;
+
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
 
-import com.learning.enums.FoodType;
+import com.learning.enums.EnableType;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-@Entity
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class Food {
+public class StaffResponse {
 	@Id
-	@GeneratedValue(strategy=GenerationType.AUTO)
-	private Long id;
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	private int id;
 	@NotBlank
-	private String foodName;
+	private String username;
 	@NotBlank
-	private String description;
+	private String name;
 	@NotBlank
-	private String foodPic;
-	@NotNull
-	private float foodPrice;
+	private String password;
 	@Enumerated(EnumType.STRING)
-	private FoodType foodType;
-	
+	private EnableType status; 
+
 }
