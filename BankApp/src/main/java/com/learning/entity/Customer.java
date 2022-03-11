@@ -5,6 +5,8 @@ import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -19,8 +21,10 @@ import javax.validation.constraints.NotBlank;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.learning.enums.EnableType;
 
 import lombok.AllArgsConstructor;
+import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -32,6 +36,7 @@ import lombok.ToString;
 @EqualsAndHashCode(exclude={"accounts"})
 @AllArgsConstructor
 @NoArgsConstructor
+@Data
 @Entity
 @ToString(exclude={"accounts"})
 @Table(uniqueConstraints = {@UniqueConstraint(columnNames="customerId") })
@@ -52,11 +57,13 @@ public class Customer {
 	private String secretQuestion;
 	private String secretAnswer;
 	//pan and aadhar are images
-	//@JsonFormat(pattern = "yyyy-MM-dd")
-//	private LocalDate doj = LocalDate.now();
+	@JsonFormat(pattern = "yyyy-MM-dd")
+	private LocalDate dateCreated;
 	@JsonIgnore
 	@OneToMany(mappedBy = "user", cascade= CascadeType.ALL,fetch=FetchType.LAZY)
 	private Set<com.learning.entity.Account> accounts;
+	@Enumerated(EnumType.STRING)
+	private EnableType enabled;
 
 	
 }// customer has a profile

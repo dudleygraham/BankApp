@@ -23,11 +23,19 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.learning.IdNotFoundException;
+import com.learning.entity.Account;
+import com.learning.entity.Beneficiary;
 import com.learning.entity.Customer;
+import com.learning.entity.Staff;
+import com.learning.entity.Transfer;
 import com.learning.exception.NoDataFoundException;
+import com.learning.payload.request.AccountRequest;
 import com.learning.payload.request.SignupRequest;
 import com.learning.payload.response.CustomerResponse;
+import com.learning.payload.response.TransferResponse;
 import com.learning.repository.CustomerRepository;
+import com.learning.service.AccountService;
+import com.learning.service.BeneficiaryService;
 import com.learning.service.CustomerService;
 
 @RestController
@@ -37,6 +45,10 @@ public class CustomerController {
 	private CustomerService cs;
 	@Autowired
 	private CustomerResponse cr;
+	@Autowired
+	private AccountService as;
+	@Autowired
+	private BeneficiaryService bs;
 	
 	@DeleteMapping(value = "/{id}")
 	public ResponseEntity<?> deleteByCustomerId(@PathVariable("id") long id){
@@ -98,4 +110,99 @@ public class CustomerController {
 
 	return ResponseEntity.status(200).body(customerResponse);
 	}
-}// get all customer, approve customer account, create account
+	@PostMapping(value = "/{customerId}/account")
+	public ResponseEntity<?> createAccount(@Valid @RequestBody AccountRequest accountRequest,
+			@PathVariable("customerId") long customerId) {
+		Customer customer = new Customer();
+		if (cs.existsbyId(customerId)) {
+			Set<Account> accounts = new HashSet<>();
+			for (Account account : customer.getAccounts()) {
+				account.setBalance(accountRequest.getBalance());
+				account.setAccType(accountRequest.getAccType());
+				account.setAppType(accountRequest.getAppType());
+				accounts.add(account);
+			}
+			customer.setAccounts(accounts);
+			return ResponseEntity.status(200).body(customer);
+		} 
+		return ResponseEntity.badRequest().body("Account cannot be created");
+	}
+	
+	@GetMapping(value = "/{customerId}/account")
+	public ResponseEntity<?> getAllCustomerAccounts(@PathVariable("customerId") long customerId) {
+		if (cs.existsbyId(customerId)) {
+			for (Account account : cs.getAllCustomerAccounts(customerId)) {
+				return ResponseEntity.status(200).body(account);
+			}
+		}
+		return ResponseEntity.badRequest().body("No accounts created for the customer");
+	}
+	@PostMapping(value = "/{customerId}/beneficiary")
+	public ResponseEntity<?> addBeneficiaryAccount(@PathVariable("customerId")long customerId, long accNo, Beneficiary b)
+	{
+		if (cs.existsbyId(customerId) && accNo == b.getAccount().getAccNo() ) {
+			as.getAccountById(accNo).orElseThrow(()->new NoDataFoundException("No such account")).getBeneficiaries().add(b);
+			return ResponseEntity.status(200).body(b);	
+		}
+		return ResponseEntity.status(200).body("Sorry, Beneficiary With "+accNo +" not added");
+	}
+	@DeleteMapping(value = "/{customerId}/beneficiary/{beneficiaryId}")
+	public ResponseEntity<?> deleteBeneficiaryById(@PathVariable("customerId") long customerId, @PathVariable("beneficiaryId") long beneficiaryId)
+	{
+		if (cs.existsbyId(customerId)) {
+			String deletedBeneficiary = bs.deleteBeneficiaryById(beneficiaryId);
+			return ResponseEntity.status(200).body(deletedBeneficiary);
+		}
+		return ResponseEntity.badRequest().body("Beneficiary not deleted");
+	}
+	@PutMapping(value = "/transfer")
+	public ResponseEntity<?> transfer(Transfer t, Customer c){
+		Account donor = as.getAccountById(t.getFromAccNumber()).orElseThrow(()->new NoDataFoundException("Account not found"));
+		Account recep = as.getAccountById(t.getToAccNumber()).orElseThrow(()->new NoDataFoundException("Account not found"));
+		int amount = t.getAmount();
+		int original = recep.getBalance();
+		recep.setBalance(original + amount);
+		original = donor.getBalance();
+		donor.setBalance(original- amount);
+		TransferResponse tr = new TransferResponse();
+		tr.setFromAccNumber(t.getFromAccNumber());
+		tr.setToAccNumber(t.getToAccNumber());
+		tr.setAmount(amount);
+		tr.setReason(t.getReason());
+		tr.setBy(c.getFullname());
+		return ResponseEntity.status(200).body(tr);
+	}
+	@PutMapping(value="/:username/forgot")
+	public ResponseEntity<?> forgot(String username, String password){
+		List<Customer> customers = cs.getAllCustomers();
+		boolean found= false;
+		Customer c = new Customer();
+		for(int i = 0; found = false; i++) {
+			if (customers.get(i).getUsername().equals(username)) {
+				found = true;
+				c = customers.get(i);
+			}
+		}
+		if(found) {
+			c.setPassword(password);
+			return ResponseEntity.status(200).body("Password updated");
+		}
+		return ResponseEntity.status(403).body("Sorry, password not updated");
+	}
+	@GetMapping(value="/:username/forgot/question/answer")
+	public ResponseEntity<?> answerQuestion(String username, String answer) {
+		List<Customer> customers = cs.getAllCustomers();
+		boolean found= false;
+		Customer c = new Customer();
+		for(int i = 0; found = false; i++) {
+			if (customers.get(i).getUsername().equals(username) 
+					&& customers.get(i).getSecretAnswer().equals(answer)) {
+				found = true;
+			}
+		}
+		if(found) {
+			return ResponseEntity.status(200).body("Details validated");
+		}
+		return ResponseEntity.status(403).body("Sorry, details did not validate");
+	}
+}
