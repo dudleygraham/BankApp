@@ -224,11 +224,11 @@ public class CustomerController {
 		List<Customer> customers = customerService.getAllCustomers();
 		List<CustomerResponse> crs = new ArrayList<>();
 		customers.forEach(e -> {
-			CustomerResponse cr = new CustomerResponse();
-			cr.setPassword(e.getPassword());
-			cr.setFullname(e.getFullname());
-			cr.setUsername(e.getUsername());
-			crs.add(cr);
+			CustomerResponse customerResponse = new CustomerResponse();
+			customerResponse.setPassword(e.getPassword());
+			customerResponse.setFullname(e.getFullname());
+			customerResponse.setUsername(e.getUsername());
+			crs.add(customerResponse);
 		});
 		if (crs.size() > 0) {
 			return ResponseEntity.ok(crs);

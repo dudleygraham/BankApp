@@ -16,13 +16,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.learning.entity.Staff;
-import com.learning.entity.Staff;
 import com.learning.enums.EnableType;
-import com.learning.entity.Staff;
 import com.learning.exception.NoDataFoundException;
 import com.learning.payload.request.SignupRequest;
-import com.learning.payload.response.StaffResponse;
-import com.learning.payload.response.StaffResponse;
 import com.learning.payload.response.StaffResponse;
 import com.learning.service.StaffService;
 
@@ -33,16 +29,16 @@ public class AdminController {
   StaffService ss;
   @Autowired
   StaffResponse sr;
-  @PostMapping("/staff")
-	public ResponseEntity<?> register(@Valid @RequestBody SignupRequest sr) {	
-		Staff s = new Staff();
-		s.setStaffUserName(sr.getUsername());
-		s.setStaffName(sr.getFullname());
-		s.setStaffPassword(sr.getPassword());
-		
-		Staff staff = ss.addStaff(s);
-		return ResponseEntity.status(201).body(staff);
-	}
+//  @PostMapping("/staff")
+//	public ResponseEntity<?> register(@Valid @RequestBody SignupRequest sr) {	
+//		Staff s = new Staff();
+//		s.setStaffUserName(sr.getUsername());
+//		s.setStaffName(sr.getFullname());
+//		s.setStaffPassword(sr.getPassword());
+//		
+//		Staff staff = ss.addStaff(s);
+//		return ResponseEntity.status(201).body(staff);
+//	}
   @GetMapping("/staff")
 	public ResponseEntity<?> getAllStaffs(){
 		List<Staff> Staffs = ss.getAllStaffs();
