@@ -10,7 +10,6 @@ public class TransferServiceImpl implements TransferService {
 
 	@Override
 	public Transfer addTransfer(Transfer Transfer) {
-
 		return null;
 	}
 
@@ -40,7 +39,6 @@ public class TransferServiceImpl implements TransferService {
 
 	@Override
 	public List<Transfer> getAllTransfersAscOrder() {
-
 		return null;
 	}
 

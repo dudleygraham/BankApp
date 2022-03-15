@@ -1,22 +1,32 @@
 package com.learning.payload.response;
 
-
-import org.springframework.format.annotation.DateTimeFormat;
-
 import com.learning.enums.AccountType;
 
-import lombok.AllArgsConstructor;
+
 import lombok.Data;
-import lombok.NoArgsConstructor;
+
+
+import java.sql.Date;
+
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import javax.persistence.ManyToOne;
+
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.learning.enums.ApprovalType;
+
 
 @Data
-@AllArgsConstructor
-@NoArgsConstructor
 public class AccountResponse {
-	private AccountType accountType;
-	private double accountBalance;
-	private Boolean approved;
-	private int accountNumber;
-	private DateTimeFormat dateOfCreation;
-	
+	private long accNo;
+	@Enumerated(EnumType.STRING)
+	private AccountType accType;
+	@Enumerated(EnumType.STRING)
+	private ApprovalType appType;
+	@ManyToOne
+	private String customerName;
+	@JsonFormat(pattern = "yyyy-MM-dd")
+	private Date dateCreated;
+	boolean approved;
+
 }

@@ -4,9 +4,9 @@ import java.util.List;
 import java.util.Optional;
 
 import com.learning.entity.Account;
-import com.learning.entity.Beneficiary;
+
 import com.learning.entity.Customer;
-import com.learning.entity.Staff;
+
 
 
 public interface CustomerService {
@@ -19,5 +19,4 @@ public interface CustomerService {
 	public boolean existsbyId(long id);
 	public List<Customer> getAllCustomerAscOrder();
 	public List<Customer> getAllCustomerDescOrder();
-	List<Beneficiary> getAllCustomerBeneficiaries(long id);
 }

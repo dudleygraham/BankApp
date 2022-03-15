@@ -6,6 +6,7 @@ import java.util.Optional;
 import com.learning.entity.Staff;
 
 public interface StaffService {
+
 	public Staff addStaff(Staff staff);
 	public Optional<Staff> getStaffById(long id); 
 	public List<Staff> getAllStaffs();
@@ -14,4 +15,5 @@ public interface StaffService {
 	public List<Staff> getAllStaffAscOrder();
 	public List<Staff> getAllStaffDescOrder();
 	public boolean existsById(long id);
+
 }

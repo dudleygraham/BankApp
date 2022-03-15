@@ -6,6 +6,7 @@ import java.util.Optional;
 import com.learning.entity.Transaction;
 
 public interface TransactionService {
+
 	public Transaction addTransaction(Transaction transaction);
 	public Optional<Transaction> getTransactionById(long id); 
 	public List<Transaction> getAllTransactions();
@@ -14,4 +15,5 @@ public interface TransactionService {
 	public List<Transaction> getAllTransactionAscOrder();
 	public List<Transaction> getAllTransactionDescOrder();
 	public boolean existsById(long id);
+
 }

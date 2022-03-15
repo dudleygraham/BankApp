@@ -27,4 +27,5 @@ public class SignupRequest {
 	private String fullname;
 	@NotBlank
 	private String password;
+
 }
