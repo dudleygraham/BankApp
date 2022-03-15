@@ -19,8 +19,5 @@ spring:
         physical-strategy: com.learning.utils.CustomNamingStrategy
 com:
   learning:
-    jwtSecret:bankapp
+    jwtSecret:foodapp
     jwtExpirationMs:86400000
-
-#    jwtSecret:bankapp
-

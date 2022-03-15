@@ -7,7 +7,7 @@ import org.hibernate.engine.jdbc.env.spi.JdbcEnvironment;
 public class CustomNamingStrategy extends PhysicalNamingStrategyStandardImpl {
 	@Override
 	public Identifier toPhysicalTableName(Identifier name, JdbcEnvironment context) {
-		// TODO Auto-generated method stub
+		
 		String newNameString = name.getText().concat("_TBL");
 		return Identifier.toIdentifier(newNameString);
 	}

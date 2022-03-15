@@ -13,7 +13,7 @@ public class ApiValidationError extends ApiSubError {
 	private Object rejectedValue;
 	private String message;
 	public ApiValidationError(String object, String message) {
-		// TODO Auto-generated constructor stub
+
 		this.object = object;
 		this.message = message;
 	}
