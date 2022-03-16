@@ -8,7 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.learning.entity.Account;
-import com.learning.repo.AccountRepository;
+import com.learning.repository.AccountRepository;
 import com.learning.service.AccountService;
 
 @Service

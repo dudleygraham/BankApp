@@ -48,11 +48,11 @@ public class Customer {
 	private String fullname;
 	@NotBlank
 	private String username;
+	@NotBlank
 	private String password;
 	private String phone;
-	@NotBlank
+	
 	private String pan;
-	@NotBlank
 	private String aadhar;
 	private String secretQuestion;
 	private String secretAnswer;
@@ -60,7 +60,7 @@ public class Customer {
 	@JsonFormat(pattern = "yyyy-MM-dd")
 	private LocalDate dateCreated;
 	@JsonIgnore
-	@OneToMany(mappedBy = "user", cascade= CascadeType.ALL,fetch=FetchType.LAZY)
+	@OneToMany(mappedBy = "customerId", cascade= CascadeType.ALL,fetch=FetchType.LAZY)
 	private Set<com.learning.entity.Account> accounts;
 	@Enumerated(EnumType.STRING)
 	private EnableType enabled;

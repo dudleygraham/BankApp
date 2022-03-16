@@ -10,8 +10,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.validation.constraints.NotBlank;
-import com.learning.enums.Status;
-import com.learning.enums.Status;
+
 import com.learning.enums.EnableType;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -19,7 +18,7 @@ import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 @Data
-@Entity
+
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString

@@ -9,8 +9,7 @@ import javax.persistence.Id;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
-
-import com.learning.enums.DbcrType;
+import com.learning.enums.TransactionType;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -31,5 +30,5 @@ public class Transaction {
 	@NotNull
 	private double amount;
 	@Enumerated(EnumType.STRING)
-	private DbcrType debitCredit;
+	private TransactionType debitCredit;
 }

@@ -31,7 +31,7 @@ public class Account {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
-	private int accountId;
+	private long accountId;
 	
 	private int accountNumber;
 	

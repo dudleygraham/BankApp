@@ -13,9 +13,9 @@ import org.springframework.stereotype.Service;
 import com.learning.entity.Account;
 import com.learning.entity.Beneficiary;
 import com.learning.entity.Customer;
-import com.learning.repo.AccountRepository;
-import com.learning.repo.BeneficiaryRepository;
-import com.learning.repo.CustomerRepository;
+import com.learning.repository.AccountRepository;
+import com.learning.repository.BeneficiaryRepository;
+import com.learning.repository.CustomerRepository;
 import com.learning.service.CustomerService;
 
 import com.learning.service.CustomerService;
@@ -36,7 +36,7 @@ public class CustomerServiceImpl implements CustomerService {
 	}
 
 	@Override
-	public Optional<Customer> getCustomerById(long id) {
+	public Customer getCustomerById(long id) {
 		return customerRepo.findById(id);
 	}
 

@@ -6,7 +6,7 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.learning.entity.Transaction;
-import com.learning.repo.TransactionRepository;
+import com.learning.repository.TransactionRepository;
 import com.learning.service.TransactionService;
 
 public class TransactionServiceImpl implements TransactionService {

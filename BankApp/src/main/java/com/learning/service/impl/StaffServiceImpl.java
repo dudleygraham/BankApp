@@ -7,7 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.learning.entity.Staff;
-import com.learning.repo.StaffRepository;
+import com.learning.repository.StaffRepository;
 import com.learning.service.StaffService;
 
 @Service

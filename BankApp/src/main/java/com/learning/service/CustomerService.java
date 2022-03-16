@@ -11,7 +11,7 @@ import com.learning.entity.Customer;
 
 public interface CustomerService {
 	public Customer addCustomer(Customer user);
-	public Optional<Customer> getCustomerById (long id);
+	public Customer getCustomerById (long id);
 	public List<Customer> getAllCustomers();
 	public List<Account> getAllCustomerAccounts(long id);
 	public void deleteCustomerById(long id);

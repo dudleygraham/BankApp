@@ -14,13 +14,14 @@ import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.crypto.password.PasswordEncoder;
+//import org.springframework.security.access.prepost.PreAuthorize;
+//import org.springframework.security.authentication.AuthenticationManager;
+//import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+//import org.springframework.security.core.Authentication;
+//import org.springframework.security.core.context.SecurityContextHolder;
+//import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -36,7 +37,7 @@ import com.learning.entity.Customer;
 import com.learning.enums.AccountType;
 import com.learning.exception.NoDataFoundException;
 import com.learning.payload.request.AccountRequest;
-import com.learning.payload.request.SignInRequest;
+
 import com.learning.payload.request.SignupRequest;
 import com.learning.payload.response.CustomerResponse;
 //import com.learning.payload.response.JwtResponse;
@@ -48,6 +49,7 @@ import com.learning.service.CustomerService;
 @RestController
 @RequestMapping("/customer")
 @Validated
+@CrossOrigin(origins = "*", maxAge = 3600)
 public class CustomerController {
 
 //	@Autowired
@@ -109,25 +111,25 @@ public class CustomerController {
 //		return ResponseEntity.badRequest().body("Problem in sign in");
 //	}
 //
-//	@PostMapping("/register")
+	@PostMapping("/register")
 //	@PreAuthorize("hasRole('CUSTOMER')")
-//	public ResponseEntity<?> register(@Valid @RequestBody SignupRequest sr) {
-// 
-//		Customer cust = new Customer();
-//
-//		cust.setUsername(sr.getUsername());
-//
-//		cust.setFullname(sr.getFullname());
-//
-//		cust.setPassword(sr.getPassword());
-//
-//		Customer custmer = customerService.addCustomer(cust);
-//
-//		return ResponseEntity.status(201).body(custmer);
-//	}
+	public ResponseEntity<?> register(@Valid @RequestBody SignupRequest sr) {
+
+		Customer cust = new Customer();
+
+		cust.setUsername(sr.getUsername());
+
+		cust.setFullname(sr.getFullname());
+
+		cust.setPassword(sr.getPassword());
+
+		Customer custmer = customerService.addCustomer(cust);
+
+		return ResponseEntity.status(201).body(custmer);
+	}
 
 	@PostMapping(value = "/{customerId}/account")
-	@PreAuthorize("hasRole('CUSTOMER')")
+	//@PreAuthorize("hasRole('CUSTOMER')")
 	public ResponseEntity<?> createAccount(@Valid @RequestBody AccountRequest accountRequest,
 			@PathVariable("customerId") long customerId) {
 		Customer customer = new Customer();
@@ -146,7 +148,7 @@ public class CustomerController {
 	}
 	
 	@GetMapping(value = "/{customerId}/account")
-	@PreAuthorize("hasRole('CUSTOMER')")
+//	@PreAuthorize("hasRole('CUSTOMER')")
 	public ResponseEntity<?> getAllCustomerAccounts(@PathVariable("customerId") long customerId) {
 		if (customerService.existsbyId(customerId)) {
 			for (Account account : customerService.getAllCustomerAccounts(customerId)) {
@@ -239,8 +241,8 @@ public class CustomerController {
 
 	@GetMapping(value = "/{id}")
 	public ResponseEntity<?> getCustomerById(@PathVariable("id") long id) {
-		Customer customer = customerService.getCustomerById(id)
-				.orElseThrow(() -> new NoDataFoundException("no data found"));
+		Customer customer = customerService.getCustomerById(id);
+				//.orElseThrow(() -> new NoDataFoundException("no data found"));
 		return ResponseEntity.ok(customer);
 	}
 
@@ -259,7 +261,7 @@ public class CustomerController {
 			@PathVariable("customerId") long customerId) {
 		Map<String, Object> map = new HashMap<>();
 		if (customerService.existsbyId(customerId)) {
-			Customer existing = customerService.getCustomerById(customerId).get();
+			Customer existing = customerService.getCustomerById(customerId);
 			existing.setFullname(customer.getFullname());
 			existing.setPhone(customer.getPhone());
 			existing.setPan(customer.getPan());

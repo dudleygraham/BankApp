@@ -7,6 +7,7 @@ import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -24,11 +25,12 @@ import com.learning.service.StaffService;
 
 @RestController
 @RequestMapping("/admin")
+@CrossOrigin(origins = "*", maxAge = 3600)
 public class AdminController {
   @Autowired
-  StaffService ss;
-  @Autowired
-  StaffResponse sr;
+  StaffService staffService;
+  
+  StaffResponse staffResponse;
 //  @PostMapping("/staff")
 //	public ResponseEntity<?> register(@Valid @RequestBody SignupRequest sr) {	
 //		Staff s = new Staff();
@@ -41,7 +43,7 @@ public class AdminController {
 //	}
   @GetMapping("/staff")
 	public ResponseEntity<?> getAllStaffs(){
-		List<Staff> Staffs = ss.getAllStaffs();
+		List<Staff> Staffs = staffService.getAllStaffs();
 		List<StaffResponse> srs = new ArrayList<>();
 		Staffs.forEach(e->{StaffResponse sr = new StaffResponse();
 		sr.setPassword(e.getStaffPassword());
@@ -59,7 +61,7 @@ public class AdminController {
   	@PutMapping(value="/{id}")
 	public ResponseEntity<?> updateStaffById(@PathVariable("id")long id, EnableType status) {
 		
-	Staff Staff =	ss.getStaffById(id).orElseThrow(()->new NoDataFoundException("data not available"));
+	Staff Staff =	staffService.getStaffById(id).orElseThrow(()->new NoDataFoundException("data not available"));
 	StaffResponse StaffResponse=  new StaffResponse();
 	StaffResponse.setStatus(status);
 	
