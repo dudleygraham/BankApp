@@ -9,6 +9,7 @@ import com.learning.enums.EnableType;
 import com.learning.exception.NoDataFoundException;
 import com.learning.payload.request.AccountRequest;
 import com.learning.payload.request.BeneficiaryRequest;
+import com.learning.payload.request.SignInRequest;
 import com.learning.payload.response.AccountResponse;
 import com.learning.payload.response.ApproveResponse;
 import com.learning.payload.response.BeneficiaryResponse;
@@ -18,6 +19,7 @@ import com.learning.payload.response.TransferResponse;
 import com.learning.service.AccountService;
 import com.learning.service.BeneficiaryService;
 import com.learning.service.CustomerService;
+import com.learning.service.StaffService;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -44,6 +46,8 @@ public class StaffController {
 	private AccountService accountService;
 	@Autowired
 	private BeneficiaryService beneficiaryService;
+	@Autowired
+	private StaffService staffService;
 
 	private CustomerResponse customerResponse;
 	@GetMapping(value = "/account/{accountNo}")
@@ -193,5 +197,27 @@ public class StaffController {
 			return ResponseEntity.status(200).body(beneficiaryResponseList);
 		}
 		return ResponseEntity.badRequest().body("No beneficiary to approve");
+	}
+	public ResponseEntity<?> authenticate(@Valid @RequestBody SignInRequest signInRequest){
+		List<Staff> staffList = staffService.getAllStaffs();
+		
+			boolean wrongPassword = false;
+		boolean noSuchUser= false;
+		Staff s = new Staff();
+		for(int i = 0; i<staffList.size(); i++) {
+			if(signInRequest.getUsername() == staffList.get(i).getStaffUserName()) {
+				if(signInRequest.getPassword()==staffList.get(i).getStaffPassword()) {
+					s = staffList.get(i);
+					return ResponseEntity.status(200).body(s);
+					
+				}wrongPassword = true;
+			}noSuchUser = true;
+		}
+		if(wrongPassword) {
+			return ResponseEntity.badRequest().body("wrong password");
+		}
+		if(noSuchUser) {
+			return ResponseEntity.badRequest().body("no such user");
+		}return ResponseEntity.status(200).body(s);
 	}
 }

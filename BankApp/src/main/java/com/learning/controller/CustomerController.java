@@ -37,7 +37,7 @@ import com.learning.entity.Customer;
 import com.learning.enums.AccountType;
 import com.learning.exception.NoDataFoundException;
 import com.learning.payload.request.AccountRequest;
-
+import com.learning.payload.request.SignInRequest;
 import com.learning.payload.request.SignupRequest;
 import com.learning.payload.response.CustomerResponse;
 //import com.learning.payload.response.JwtResponse;
@@ -45,6 +45,8 @@ import com.learning.payload.response.CustomerResponse;
 //import com.learning.security.service.UserDetailsImpl;
 import com.learning.service.BeneficiaryService;
 import com.learning.service.CustomerService;
+
+import lombok.var;
 
 @RestController
 @RequestMapping("/customer")
@@ -111,6 +113,30 @@ public class CustomerController {
 //		return ResponseEntity.badRequest().body("Problem in sign in");
 //	}
 //
+	@PostMapping("/authenticate")
+	public ResponseEntity<?> authenticate(@Valid @RequestBody SignInRequest signInRequest){
+		List<Customer> customerList = customerService.getAllCustomers();
+		
+		
+			boolean wrongPassword = false;
+		boolean noSuchUser= false;
+		Customer c = new Customer();
+		for(int i = 0; i<customerList.size(); i++) {
+			if(signInRequest.getUsername() == customerList.get(i).getUsername()) {
+				if(signInRequest.getPassword()==customerList.get(i).getPassword()) {
+					c = customerList.get(i);
+					return ResponseEntity.status(200).body(c);
+					
+				}wrongPassword = true;
+			}noSuchUser = true;
+		}
+		if(wrongPassword) {
+			return ResponseEntity.badRequest().body("wrong password");
+		}
+		if(noSuchUser) {
+			return ResponseEntity.badRequest().body("no such user");
+		}return ResponseEntity.status(200).body(c);
+	}
 	@PostMapping("/register")
 //	@PreAuthorize("hasRole('CUSTOMER')")
 	public ResponseEntity<?> register(@Valid @RequestBody SignupRequest sr) {
