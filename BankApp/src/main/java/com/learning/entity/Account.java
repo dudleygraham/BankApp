@@ -16,6 +16,8 @@ import org.springframework.format.annotation.DateTimeFormat;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.learning.enums.AccountType;
+import com.learning.enums.ApprovalType;
+import com.learning.enums.Status;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -43,12 +45,16 @@ public class Account {
 	@JsonFormat(pattern = "yyyy-MM-dd")
 	private Date dateOfCreation;
 	
-	private String accountStatus;
-	
-	private Boolean approved;
+	//private String accountStatus;
+	@Enumerated(EnumType.STRING)
+	private Status accountStatus;
+	//private Boolean approved;
+	@Enumerated(EnumType.STRING)
+	private ApprovalType approvalType;
 	
 	@OneToMany
 	private List<Transaction> transactions;
-	
+	//private Customer customer;
 	private long customerId;
+	private String customerName;
 }

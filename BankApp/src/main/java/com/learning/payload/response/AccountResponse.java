@@ -1,5 +1,6 @@
 package com.learning.payload.response;
 
+import com.learning.entity.Customer;
 import com.learning.enums.AccountType;
 
 
@@ -24,9 +25,10 @@ public class AccountResponse {
 	@Enumerated(EnumType.STRING)
 	private ApprovalType appType;
 	@ManyToOne
-	private String customerName;
+	private Customer customer;
 	@JsonFormat(pattern = "yyyy-MM-dd")
 	private Date dateCreated;
 	boolean approved;
+	private String customerName;
 
 }

@@ -1,5 +1,7 @@
 package com.learning.entity;
 
+import java.time.LocalDate;
+
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
@@ -10,7 +12,9 @@ import javax.persistence.OneToOne;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.learning.enums.ActiveType;
+import com.learning.enums.ApprovalType;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -31,8 +35,10 @@ public class Beneficiary {
 	@NotBlank
 	private String beneficiaryName;
 	@Enumerated(EnumType.STRING)
-	private ActiveType active;
+	private ApprovalType approved;
 	
 	@OneToOne
 	private Account account;
+	@JsonFormat(pattern = "yyyy-MM-dd")
+	  private LocalDate dateAdded;
 }

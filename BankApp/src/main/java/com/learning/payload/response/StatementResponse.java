@@ -8,8 +8,8 @@ import lombok.Data;
 
 @Data
 public class StatementResponse {
-	private long accNo;
+	private long accountNumber;
 	private String customerName;
-	private int balance;
+	private double balance;
 	private List<Transaction> transactions;
 }

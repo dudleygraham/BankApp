@@ -6,7 +6,7 @@ import lombok.Data;
 public class TransferResponse {
 	private long fromAccNumber;
 	  private long toAccNumber;
-	  private int amount;
+	  private double amount;
 	  private String reason;
 	  private String by;
 }

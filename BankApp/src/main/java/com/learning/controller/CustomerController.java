@@ -138,7 +138,7 @@ public class CustomerController {
 			for (Account account : customer.getCustomerAccounts()) {
 				account.setAccountBalance(accountRequest.getAccountBalance());
 				account.setAccountType(accountRequest.getAccounttype());
-				account.setApproved(accountRequest.getApproved());
+				account.setApprovalType(accountRequest.getApprovalType());
 				accounts.add(account);
 			}
 			customer.setCustomerAccounts(accounts);
