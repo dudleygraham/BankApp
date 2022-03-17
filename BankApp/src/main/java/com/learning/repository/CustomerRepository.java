@@ -13,4 +13,5 @@ import org.springframework.stereotype.Repository;
 public interface CustomerRepository extends JpaRepository<Customer, Long> {
 	public boolean existsById(long id);
 	public Customer findById(long id);
+	public Customer findByUsername(String user);
 }

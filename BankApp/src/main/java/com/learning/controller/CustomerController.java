@@ -14,12 +14,17 @@ import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-//import org.springframework.security.access.prepost.PreAuthorize;
-//import org.springframework.security.authentication.AuthenticationManager;
-//import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-//import org.springframework.security.core.Authentication;
-//import org.springframework.security.core.context.SecurityContextHolder;
-//import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -34,15 +39,18 @@ import org.springframework.web.bind.annotation.RestController;
 import com.learning.entity.Account;
 import com.learning.entity.Beneficiary;
 import com.learning.entity.Customer;
+import com.learning.entity.Role;
 import com.learning.enums.AccountType;
+import com.learning.enums.RoleType;
 import com.learning.exception.NoDataFoundException;
 import com.learning.payload.request.AccountRequest;
 import com.learning.payload.request.SignInRequest;
 import com.learning.payload.request.SignupRequest;
 import com.learning.payload.response.CustomerResponse;
-//import com.learning.payload.response.JwtResponse;
-//import com.learning.security.jwt.JwtUtils;
-//import com.learning.security.service.UserDetailsImpl;
+import com.learning.security.jwt.JwtUtils;
+import com.learning.payload.response.JwtResponse;
+import com.learning.repository.RoleRepository;
+import com.learning.security.service.UserDetailsImpl;
 import com.learning.service.BeneficiaryService;
 import com.learning.service.CustomerService;
 
@@ -54,20 +62,20 @@ import lombok.var;
 @CrossOrigin(origins = "*", maxAge = 3600)
 public class CustomerController {
 
-//	@Autowired
-//	AuthenticationManager authenticationManager;
-//
+	@Autowired
+	AuthenticationManager authenticationManager;
+
 	@Autowired
 	private CustomerService customerService;
 	
 	@Autowired
 	private BeneficiaryService beneficiaryService;
-//
-//	@Autowired
-//	PasswordEncoder passwordEncoder;
-//	
-//	@Autowired
-//	JwtUtils jwtUtils;
+	private RoleRepository roleRepository;
+	@Autowired
+	PasswordEncoder passwordEncoder;
+	
+	@Autowired
+	JwtUtils jwtUtils;
 
 //	@PostMapping("/authenticate")
 //	public ResponseEntity<?> authenticate(@Valid @RequestBody Customer customer) {
@@ -84,74 +92,99 @@ public class CustomerController {
 //		return ResponseEntity.status(403).body(customer);
 //	}
 	
-//	@PostMapping("/authenticate")
-//	@PreAuthorize("hasRole('CUSTOMER')")
-//	public ResponseEntity<?> authenticate(@Valid @RequestBody SignInRequest signInRequest)
-//	{
-//		try {
-//			Authentication authentication = authenticationManager.authenticate(
-//					new UsernamePasswordAuthenticationToken(signInRequest.getUsername(), signInRequest.getPassword()));
-//
-//			SecurityContextHolder.getContext().setAuthentication(authentication);
-//			String jwt = jwtUtils.generateToken(authentication);
-//			
-//			UserDetailsImpl userDetailsImpl = (UserDetailsImpl)authentication.getPrincipal();
-//			
-//			List<String> roles = userDetailsImpl.getAuthorities()
-//					.stream()
-//					.map(e->e.getAuthority())
-//					.collect(Collectors.toList());
-//			
-//			return ResponseEntity.ok(new JwtResponse(jwt, userDetailsImpl.getId(), 
-//					userDetailsImpl.getUsername(), 
-//					userDetailsImpl.getEmail(), 
-//					roles));
-//		} catch (Exception e) {
-//			
-//			e.printStackTrace();
-//		}
-//		return ResponseEntity.badRequest().body("Problem in sign in");
-//	}
-//
 	@PostMapping("/authenticate")
-	public ResponseEntity<?> authenticate(@Valid @RequestBody SignInRequest signInRequest){
-		List<Customer> customerList = customerService.getAllCustomers();
-		
-		
-		boolean wrongPassword = false;
-		boolean noSuchUser= false;
-		Customer c = new Customer();
-		for(int i = 0; i<customerList.size(); i++) {
-			if(signInRequest.getUsername().equals(customerList.get(i).getUsername())) {
-				if(signInRequest.getPassword().equals(customerList.get(i).getPassword())) {
-					c = customerList.get(i);
-					return ResponseEntity.status(200).body(c);
-					
-				}wrongPassword = true;
-			}
-		}noSuchUser = true;
-		if(wrongPassword) {
-			return ResponseEntity.badRequest().body("wrong password");
-		}
-		if(noSuchUser) {
-			return ResponseEntity.badRequest().body("no such user");
-		}return ResponseEntity.status(200).body(c);
-	}
-	@PostMapping("/register")
 //	@PreAuthorize("hasRole('CUSTOMER')")
-	public ResponseEntity<?> register(@Valid @RequestBody SignupRequest sr) {
+	public ResponseEntity<?> authenticate(@Valid @RequestBody SignInRequest signInRequest)
+	{
+		try {
+			Authentication authentication = authenticationManager.authenticate(
+					new UsernamePasswordAuthenticationToken(signInRequest.getUsername(), signInRequest.getPassword()));
 
-		Customer cust = new Customer();
+			SecurityContextHolder.getContext().setAuthentication(authentication);
+			String jwt = jwtUtils.generateToken(authentication);
+			
+			UserDetailsImpl userDetailsImpl = (UserDetailsImpl)authentication.getPrincipal();
+			
+			List<String> roles = userDetailsImpl.getAuthorities()
+					.stream()
+					.map(e->e.getAuthority())
+					.collect(Collectors.toList());
+			
+			return ResponseEntity.ok(new JwtResponse(jwt, userDetailsImpl.getId(), 
+					userDetailsImpl.getUsername(), 
+					userDetailsImpl.getEmail(), 
+					roles));
+		} catch (Exception e) {
+			
+			e.printStackTrace();
+		}
+		return ResponseEntity.badRequest().body("Problem in sign in");
+	}
 
-		cust.setUsername(sr.getUsername());
-
-		cust.setFullname(sr.getFullname());
-
-		cust.setPassword(sr.getPassword());
-
-		Customer custmer = customerService.addCustomer(cust);
-
-		return ResponseEntity.status(201).body(custmer);
+//	@PostMapping("/authenticate")
+//	public ResponseEntity<?> authenticate(@Valid @RequestBody SignInRequest signInRequest){
+//		List<Customer> customerList = customerService.getAllCustomers();
+//		
+//		
+//		boolean wrongPassword = false;
+//		boolean noSuchUser= false;
+//		Customer c = new Customer();
+//		for(int i = 0; i<customerList.size(); i++) {
+//			if(signInRequest.getUsername().equals(customerList.get(i).getUsername())) {
+//				if(signInRequest.getPassword().equals(customerList.get(i).getPassword())) {
+//					c = customerList.get(i);
+//					return ResponseEntity.status(200).body(c);
+//					
+//				}wrongPassword = true;
+//			}
+//		}noSuchUser = true;
+//		if(wrongPassword) {
+//			return ResponseEntity.badRequest().body("wrong password");
+//		}
+//		if(noSuchUser) {
+//			return ResponseEntity.badRequest().body("no such user");
+//		}return ResponseEntity.status(200).body(c);
+//	}
+//	@PostMapping("/register")
+//	@PreAuthorize("hasRole('CUSTOMER')")
+//	public ResponseEntity<?> register(@Valid @RequestBody SignupRequest sr) {
+//
+//		Customer cust = new Customer();
+//
+//		cust.setUsername(sr.getUsername());
+//
+//		cust.setFullname(sr.getFullname());
+//		String newPassword = passwordEncoder.encode(sr.getPassword());
+//		cust.setPassword(newPassword);
+//		
+//		Customer custmer = customerService.addCustomer(cust);
+//
+//		return ResponseEntity.status(201).body(custmer);
+//	}
+	@PostMapping("/register")
+	public ResponseEntity<?> createUser(@Valid @RequestBody  SignupRequest signupRequest){
+		// can u create user object?
+		// can u initialize the values based on the signuprequest object?
+		Set<Role> roles = new HashSet<>();
+		
+		
+		Role userRole = roleRepository.findByRoleName(RoleType.CUSTOMER).get();//orElseThrow(new NoDataFoundException("no role with that name"));
+		
+		roles.add(userRole);
+		
+		
+		Customer customer = new Customer();
+ 		System.out.println("Sign up request" + signupRequest);
+		//customer.setAadhar(signupRequest.getAadhar());
+		//customer.setPan(signupRequest.getPan());
+ 		customer.setUsername(signupRequest.getUsername());
+ 		customer.setPassword(signupRequest.getPassword());
+ 		customer.setFullname(signupRequest.getFullname());
+ 		customer.setRoles(roles);
+		Customer user2 = customerService.addCustomer(customer);
+		
+		return ResponseEntity.status(201).body(user2);	
+		// 400 401 500 501 201 200 301 302 404 503
 	}
 
 	@PostMapping(value = "/{customerId}/account")

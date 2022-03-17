@@ -1,5 +1,6 @@
 package com.learning.entity;
 import java.time.LocalDate;
+
 import java.util.Set;
 
 import javax.persistence.CascadeType;
@@ -50,6 +51,8 @@ public class Customer {
 	private String pan;
 	//private Object PANimg;
 	private String aadhar;
+	@OneToMany
+	private Set<Role> roles;
 	
 	private String secretQuestion;
 	private String secretAnswer;

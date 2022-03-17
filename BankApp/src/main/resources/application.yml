@@ -8,8 +8,8 @@ spring:
     username: root
     password: root
     driver-class-name: com.mysql.cj.jdbc.Driver
-#  main:
-#    allow-bean-definition-overriding: true
+  main:
+    allow-bean-definition-overriding: true
   jpa:
     properties:
       hibernate:
@@ -21,8 +21,8 @@ spring:
         physical-strategy: com.learning.utils.CustomNamingStrategy
 com:
   learning:
-    jwtSecret:bankapp
-    jwtExpirationMs:86400000
+    jwtSecret: bankapp
+    jwtExpirationMs: 86400000
 
-#    jwtSecret:bankapp
+   # jwtSecret: bankapp
 
