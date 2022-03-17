@@ -35,6 +35,7 @@ public class AdminController {
   StaffResponse staffResponse;
   @PostMapping("/staff")
 	public ResponseEntity<?> register(@Valid @RequestBody SignupRequest sr) {	
+	  	
 		Staff s = new Staff();
 		s.setStaffUserName(sr.getUsername());
 		s.setStaffName(sr.getFullname());
