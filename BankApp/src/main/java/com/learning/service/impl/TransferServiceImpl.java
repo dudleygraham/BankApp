@@ -3,9 +3,11 @@ package com.learning.service.impl;
 import java.util.List;
 import java.util.Optional;
 
+import org.springframework.stereotype.Service;
+
 import com.learning.entity.Transfer;
 import com.learning.service.TransferService;
-
+@Service
 public class TransferServiceImpl implements TransferService {
 
 	@Override

@@ -2,8 +2,10 @@ package com.learning.controller;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import javax.validation.Valid;
+import javax.websocket.Session;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -28,24 +30,25 @@ import com.learning.service.StaffService;
 @CrossOrigin(origins = "*", maxAge = 3600)
 public class AdminController {
   @Autowired
-  StaffService staffService;
+  private StaffService staffService;
   
   StaffResponse staffResponse;
-//  @PostMapping("/staff")
-//	public ResponseEntity<?> register(@Valid @RequestBody SignupRequest sr) {	
-//		Staff s = new Staff();
-//		s.setStaffUserName(sr.getUsername());
-//		s.setStaffName(sr.getFullname());
-//		s.setStaffPassword(sr.getPassword());
-//		
-//		Staff staff = ss.addStaff(s);
-//		return ResponseEntity.status(201).body(staff);
-//	}
+  @PostMapping("/staff")
+	public ResponseEntity<?> register(@Valid @RequestBody SignupRequest sr) {	
+		Staff s = new Staff();
+		s.setStaffUserName(sr.getUsername());
+		s.setStaffName(sr.getFullname());
+		s.setStaffPassword(sr.getPassword());
+		
+		Staff staff = staffService.addStaff(s);
+		return ResponseEntity.status(201).body(staff);
+  }
   @GetMapping("/staff")
 	public ResponseEntity<?> getAllStaffs(){
 		List<Staff> Staffs = staffService.getAllStaffs();
 		List<StaffResponse> srs = new ArrayList<>();
 		Staffs.forEach(e->{StaffResponse sr = new StaffResponse();
+		sr.setId(e.getStaffId());
 		sr.setPassword(e.getStaffPassword());
 		sr.setName(e.getStaffName());
 		sr.setUsername(e.getStaffUserName());
@@ -58,14 +61,22 @@ public class AdminController {
 			throw new NoDataFoundException("no Staff data");
 		}
 	}
+  	@GetMapping(value = "{staffId}")
+  	public ResponseEntity<?> getStaffById(@PathVariable("staffId") long staffId)
+  	{
+  		Optional<Staff> staff = staffService.getStaffById(staffId);
+  		return ResponseEntity.ok(staff);
+  	}
   	@PutMapping(value="/{id}")
 	public ResponseEntity<?> updateStaffById(@PathVariable("id")long id, EnableType status) {
 		
-	Staff Staff =	staffService.getStaffById(id).orElseThrow(()->new NoDataFoundException("data not available"));
+	Staff staff = staffService.getStaffById(id).orElseThrow(()->new NoDataFoundException("data not available"));
+	staff.setStatus(status);
 	StaffResponse StaffResponse=  new StaffResponse();
 	StaffResponse.setStatus(status);
 	
 
 	return ResponseEntity.status(200).body(StaffResponse);
 	}
+  	
 }

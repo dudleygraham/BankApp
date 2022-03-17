@@ -7,7 +7,7 @@ import org.springframework.stereotype.Service;
 
 import com.learning.entity.Beneficiary;
 
-@Service
+
 public interface BeneficiaryService {
 	public Beneficiary addBeneficiary(Beneficiary beneficiary);
 	public Optional<Beneficiary> getBeneficiaryById(long id); 

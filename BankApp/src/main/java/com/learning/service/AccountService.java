@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service;
 
 import com.learning.entity.Account;
 
-@Service
+
 public interface AccountService {
 	public Account addAccount(Account account);
 	public Optional<Account> getAccountById(long id); 
