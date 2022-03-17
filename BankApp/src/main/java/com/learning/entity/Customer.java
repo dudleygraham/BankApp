@@ -53,7 +53,9 @@ public class Customer {
 	private String phone;
 	
 	private String pan;
+	//private Object PANimg;
 	private String aadhar;
+	
 	private String secretQuestion;
 	private String secretAnswer;
 	//pan and aadhar are images

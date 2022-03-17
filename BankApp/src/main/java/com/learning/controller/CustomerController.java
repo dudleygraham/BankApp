@@ -118,18 +118,18 @@ public class CustomerController {
 		List<Customer> customerList = customerService.getAllCustomers();
 		
 		
-			boolean wrongPassword = false;
+		boolean wrongPassword = false;
 		boolean noSuchUser= false;
 		Customer c = new Customer();
 		for(int i = 0; i<customerList.size(); i++) {
-			if(signInRequest.getUsername() == customerList.get(i).getUsername()) {
-				if(signInRequest.getPassword()==customerList.get(i).getPassword()) {
+			if(signInRequest.getUsername().equals(customerList.get(i).getUsername())) {
+				if(signInRequest.getPassword().equals(customerList.get(i).getPassword())) {
 					c = customerList.get(i);
 					return ResponseEntity.status(200).body(c);
 					
 				}wrongPassword = true;
-			}noSuchUser = true;
-		}
+			}
+		}noSuchUser = true;
 		if(wrongPassword) {
 			return ResponseEntity.badRequest().body("wrong password");
 		}
