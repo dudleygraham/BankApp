@@ -21,4 +21,5 @@ public interface CustomerService {
 	public boolean existsbyId(long id);
 	public List<Customer> getAllCustomerAscOrder();
 	public List<Customer> getAllCustomerDescOrder();
+	public boolean existsByUsername(String username);
 }

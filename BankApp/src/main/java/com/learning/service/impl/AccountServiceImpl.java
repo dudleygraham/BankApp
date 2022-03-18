@@ -26,10 +26,15 @@ public class AccountServiceImpl implements AccountService {
 		accountRepository.deleteById(id);
 		return "success";
 	}
+	
+	public boolean existByAccountNo(long accountNum) 
+	{
+		return accountRepository.existsByAccountNo(accountNum);
+	}
 
 	@Override
 	public Account updateAccount(Account account) {
-		return account;
+		return accountRepository.save(account);
 	}
 
 	@Override
@@ -58,6 +63,11 @@ public class AccountServiceImpl implements AccountService {
 	public boolean existsById(long id) {
 		
 		return accountRepository.existsById(id);
+	}
+	
+	public List<Account> findCustomerAccountById(long id)
+	{
+		return accountRepository.findCustomerAccountById(id);
 	}
 
 }

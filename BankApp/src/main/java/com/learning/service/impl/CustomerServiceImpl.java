@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 import com.learning.entity.Account;
 import com.learning.entity.Beneficiary;
 import com.learning.entity.Customer;
+import com.learning.enums.RoleType;
 import com.learning.repository.AccountRepository;
 import com.learning.repository.BeneficiaryRepository;
 import com.learning.repository.CustomerRepository;
@@ -38,6 +39,11 @@ public class CustomerServiceImpl implements CustomerService {
 	@Override
 	public Customer getCustomerById(long id) {
 		return customerRepo.findById(id);
+	}
+	
+	public Optional<Customer> getCustomerByUsername(String username)
+	{
+		return Optional.of(customerRepo.findByUsername(username));
 	}
 
 	@Override
@@ -81,14 +87,27 @@ public class CustomerServiceImpl implements CustomerService {
 
 	@Override
 	public Customer updateCustomer(Customer customer) {
-		
-		return null;
+		if (customerRepo.existsById(customer.getCustomerId()))
+		{
+			return customerRepo.save(customer);
+		}
+		else {
+			throw new NoRecordsFoundException("Customer Id" + customer.getCustomerId() + "not found");
+		}
 	}
 
 	@Override
 	public boolean existsbyId(long id) {
 		
-		return false;
+		return customerRepo.existsById(id);
+	}
+	
+	public boolean existsByUsername(String username) {
+		return customerRepo.existsByUsername(username);
+	}
+	
+	public List<Customer> findCustomerByRoleName(RoleType roleName) {
+		return customerRepo.findCustomerByRoleName(roleName);
 	}
 
 }

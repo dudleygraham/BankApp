@@ -18,5 +18,10 @@ public interface TransactionService {
 	public List<Transaction> getAllTransactionAscOrder();
 	public List<Transaction> getAllTransactionDescOrder();
 	public boolean existsById(long id);
+	
+	public void sendMoney(long fromAccount, double amount);
+	
+	public void getMoney(long toAccount, double amount);
 
+	public void transferMoney(long fromAccount, long toAccount, double Amount);
 }
