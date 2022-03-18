@@ -21,16 +21,16 @@ public interface CustomerRepository extends JpaRepository<Customer, Long> {
 	public Customer findById(long id);
 	public Customer findByUsername(String user);
 	
-	@Transactional
-	@Override
-	<S extends Customer> S save(S entity);
-	
-	@Transactional
-	@Override
-	<S extends Customer> List<S> saveAll(Iterable<S> entities);
+//	@Transactional
+//	@Override
+//	<S extends Customer> S save(S entity);
+//	
+//	@Transactional
+//	@Override
+//	<S extends Customer> List<S> saveAll(Iterable<S> entities);
 	
 	
 	boolean existsByUsername(String username);
 	
-	List<Customer> findCustomerByRoleName(RoleType roleName);
+	//List<Customer> findCustomerByRoleName(RoleType roleName);
 }

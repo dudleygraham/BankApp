@@ -2,7 +2,7 @@ package com.learning.entity;
 import java.time.LocalDate;
 
 import java.util.Set;
-
+import javax.persistence.JoinColumn;
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -11,6 +11,8 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
@@ -29,7 +31,7 @@ import lombok.Setter;
 import lombok.ToString;
 @Setter
 @Getter
-@EqualsAndHashCode(exclude={"accounts"})
+@EqualsAndHashCode(exclude  = { "accounts", "roles", "beneficiaries" })
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
@@ -51,7 +53,12 @@ public class Customer {
 	private String pan;
 	//private Object PANimg;
 	private String aadhar;
-	@OneToMany
+	@ManyToMany
+	@JoinTable(
+			name = "user_roles",
+			joinColumns = @JoinColumn(name = "customerId"),
+			inverseJoinColumns = @JoinColumn(name = "roleId")
+	)
 	private Set<Role> roles;
 	
 	private String secretQuestion;

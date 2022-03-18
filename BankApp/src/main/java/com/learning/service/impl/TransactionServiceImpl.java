@@ -68,45 +68,47 @@ public class TransactionServiceImpl implements TransactionService {
 		return transactionRepository.existsById(id);
 	}
 
-	@Override
-	public void sendMoney(long fromAccount, BigDecimal amount) {
+//	@Override
+//	public void sendMoney(long fromAccount, BigDecimal amount) {
+//
+//		Account frmAccount = accountRepository.findCustomerAccountById(fromAccount).get();
+//	
+//		BigDecimal balance = frmAccount.getAccountBalance();
+//		
+//		if (balance.compareTo(amount) > 0) {
+//
+//			BigDecimal sendAmount = balance.add(amount.negate());
+//			frmAccount.setAccountBalance(sendAmount);
+//
+//			accountRepository.save(frmAccount);
+//		} else {
+//			throw new TransferException("Account balance not vaild");
+//		}
+//
+//	}
+//
+//	@Override
+//	public void getMoney(long toAccount, BigDecimal amount) {
+//		
+//		Account tAccount = accountRepository.findCustomerAccountById(toAccount).get();
+//
+//		BigDecimal balance = tAccount.getAccountBalance().add(amount);
+//
+//		tAccount.setAccountBalance(balance);
+//
+//		accountRepository.save(tAccount);
+//		
+//
+//	}
+//
+//	@Override
+//	@Transactional(rollbackFor = TransferException.class)
+//	public void transferMoney(long fromAccount, long toAccount, BigDecimal amount) {
+//		sendMoney(fromAccount, amount);
+//		getMoney(toAccount, amount);
+//	}
 
-		Account frmAccount = accountRepository.findCustomerAccountById(fromAccount).get();
 	
-		BigDecimal balance = frmAccount.getAccountBalance();
-		
-		if (balance.compareTo(amount) > 0) {
-
-			BigDecimal sendAmount = balance.add(amount.negate());
-			frmAccount.setAccountBalance(sendAmount);
-
-			accountRepository.save(frmAccount);
-		} else {
-			throw new TransferException("Account balance not vaild");
-		}
-
-	}
-
-	@Override
-	public void getMoney(long toAccount, BigDecimal amount) {
-		
-		Account tAccount = accountRepository.findCustomerAccountById(toAccount).get();
-
-		BigDecimal balance = tAccount.getAccountBalance().add(amount);
-
-		tAccount.setAccountBalance(balance);
-
-		accountRepository.save(tAccount);
-		
-
-	}
-
-	@Override
-	@Transactional(rollbackFor = TransferException.class)
-	public void transferMoney(long fromAccount, long toAccount, BigDecimal amount) {
-		sendMoney(fromAccount, amount);
-		getMoney(toAccount, amount);
-	}
 	
 
 }

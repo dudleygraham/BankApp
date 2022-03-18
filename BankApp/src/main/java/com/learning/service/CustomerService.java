@@ -13,13 +13,14 @@ import com.learning.entity.Customer;
 
 public interface CustomerService {
 	public Customer addCustomer(Customer user);
-	public Customer getCustomerById (long id);
+	public Optional<Customer> getCustomerById (Long id);
 	public List<Customer> getAllCustomers();
-	public List<Account> getAllCustomerAccounts(long id);
-	public void deleteCustomerById(long id);
+	public List<Account> getAllCustomerAccounts(Long id);
+	public void deleteCustomerById(Long id);
 	public Customer updateCustomer(Customer customer);
-	public boolean existsbyId(long id);
+	public boolean existsbyId(Long id);
 	public List<Customer> getAllCustomerAscOrder();
 	public List<Customer> getAllCustomerDescOrder();
 	public boolean existsByUsername(String username);
+	public Customer getCustomerByUsername(String user);
 }

@@ -17,17 +17,17 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface AccountRepository extends JpaRepository<Account, Long> {
 	
-	@Transactional
-	@Override
-	<S extends Account> S save(S entity);
+//	@Transactional
+//	@Override
+//	<S extends Account> S save(S entity);
+//	
+//	@Transactional
+//	@Override
+//	<S extends Account> List<S> saveAll(Iterable<S> entities);
 	
-	@Transactional
-	@Override
-	<S extends Account> List<S> saveAll(Iterable<S> entities);
+	public boolean existsById(long accountId);
 	
-	public boolean existsById(long id);
+//	boolean existsByAccountNo(long accountNo);
 	
-	boolean existsByAccountNo(long accountNo);
-	
-	List<Account> findCustomerAccountById(long id);
+	//List<Account> findCustomerAccountById(long accountId);
 }

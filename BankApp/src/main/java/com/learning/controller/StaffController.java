@@ -130,7 +130,7 @@ public class StaffController {
 	@PutMapping(value="/customer")
 	public ResponseEntity<?> updateCustomerById(@PathVariable("id")long id, EnableType status) {
 		
-	Customer customer =	customerService.getCustomerById(id);
+	Customer customer =	customerService.getCustomerById(id).get();
 		
 	CustomerResponse customerResponse=  new CustomerResponse();
 	customerResponse.setEnabled(status);
@@ -141,7 +141,7 @@ public class StaffController {
 	@GetMapping(value = "/customer/{id}")
 	public ResponseEntity<?> getCustomerById(@PathVariable("id")long id) {
 		
-	Customer customer =	customerService.getCustomerById(id);
+	Customer customer =	customerService.getCustomerById(id).get();
 		
 	CustomerResponse customerResponse=  new CustomerResponse();
 	customerResponse.setCustomerId(customer.getCustomerId());

@@ -18,7 +18,7 @@ import lombok.Data;
 @Data
 public class UserDetailsImpl implements UserDetails {
 	
-	private long id;
+	private Long id;
 	private String username;
 	private String email;
 	

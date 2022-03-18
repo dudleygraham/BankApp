@@ -14,6 +14,7 @@ import com.learning.entity.Account;
 import com.learning.entity.Beneficiary;
 import com.learning.entity.Customer;
 import com.learning.enums.RoleType;
+import com.learning.exception.NoDataFoundException;
 import com.learning.repository.AccountRepository;
 import com.learning.repository.BeneficiaryRepository;
 import com.learning.repository.CustomerRepository;
@@ -37,13 +38,13 @@ public class CustomerServiceImpl implements CustomerService {
 	}
 
 	@Override
-	public Customer getCustomerById(long id) {
+	public Optional<Customer> getCustomerById(Long id) {
 		return customerRepo.findById(id);
 	}
 	
-	public Optional<Customer> getCustomerByUsername(String username)
+	public Customer getCustomerByUsername(String username)
 	{
-		return Optional.of(customerRepo.findByUsername(username));
+		return (customerRepo.findByUsername(username));
 	}
 
 	@Override
@@ -53,7 +54,7 @@ public class CustomerServiceImpl implements CustomerService {
 	}
 
 	@Override
-	public List<Account> getAllCustomerAccounts(long id) {
+	public List<Account> getAllCustomerAccounts(Long id) {
 		List<Account> accountsCustomer = null;
 
 		if (customerRepo.existsById(id)) {
@@ -73,7 +74,7 @@ public class CustomerServiceImpl implements CustomerService {
 	}
 
 	@Override
-	public void deleteCustomerById(long id) {
+	public void deleteCustomerById(Long id) {
 		customerRepo.deleteById(id);
 	}
 
@@ -92,12 +93,12 @@ public class CustomerServiceImpl implements CustomerService {
 			return customerRepo.save(customer);
 		}
 		else {
-			throw new NoRecordsFoundException("Customer Id" + customer.getCustomerId() + "not found");
+			throw new NoDataFoundException("Customer Id" + customer.getCustomerId() + "not found");
 		}
 	}
 
 	@Override
-	public boolean existsbyId(long id) {
+	public boolean existsbyId(Long id) {
 		
 		return customerRepo.existsById(id);
 	}
@@ -106,8 +107,8 @@ public class CustomerServiceImpl implements CustomerService {
 		return customerRepo.existsByUsername(username);
 	}
 	
-	public List<Customer> findCustomerByRoleName(RoleType roleName) {
-		return customerRepo.findCustomerByRoleName(roleName);
-	}
+//	public List<Customer> findCustomerByRoleName(RoleType roleName) {
+//		return customerRepo.findCustomerByRoleName(roleName);
+//	}
 
 }

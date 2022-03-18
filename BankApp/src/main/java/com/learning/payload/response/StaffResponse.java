@@ -25,7 +25,7 @@ import lombok.ToString;
 public class StaffResponse {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
-	private int id;
+	private long id;
 	@NotBlank
 	private String username;
 	@NotBlank

@@ -49,7 +49,7 @@ import com.learning.payload.request.SignupRequest;
 import com.learning.payload.response.CustomerResponse;
 import com.learning.security.jwt.JwtUtils;
 import com.learning.payload.response.JwtResponse;
-import com.learning.repository.RoleRepository;
+
 import com.learning.security.service.UserDetailsImpl;
 import com.learning.service.BeneficiaryService;
 import com.learning.service.CustomerService;
@@ -70,7 +70,7 @@ public class CustomerController {
 	
 	@Autowired
 	private BeneficiaryService beneficiaryService;
-	private RoleRepository roleRepository;
+
 	@Autowired
 	PasswordEncoder passwordEncoder;
 	
@@ -112,7 +112,7 @@ public class CustomerController {
 			
 			return ResponseEntity.ok(new JwtResponse(jwt, userDetailsImpl.getId(), 
 					userDetailsImpl.getUsername(), 
-					userDetailsImpl.getEmail(), 
+				
 					roles));
 		} catch (Exception e) {
 			
@@ -163,12 +163,9 @@ public class CustomerController {
 //	}
 	@PostMapping("/register")
 	public ResponseEntity<?> createUser(@Valid @RequestBody  SignupRequest signupRequest){
-		// can u create user object?
-		// can u initialize the values based on the signuprequest object?
 		Set<Role> roles = new HashSet<>();
-		
-		
-		Role userRole = roleRepository.findByRoleName(RoleType.CUSTOMER).get();//orElseThrow(new NoDataFoundException("no role with that name"));
+		Role userRole = new Role();
+		userRole.setRoleName(RoleType.CUSTOMER);//orElseThrow(new NoDataFoundException("no role with that name"));
 		
 		roles.add(userRole);
 		
@@ -300,7 +297,7 @@ public class CustomerController {
 
 	@GetMapping(value = "/{id}")
 	public ResponseEntity<?> getCustomerById(@PathVariable("id") long id) {
-		Customer customer = customerService.getCustomerById(id);
+		Customer customer = customerService.getCustomerById(id).get();
 				//.orElseThrow(() -> new NoDataFoundException("no data found"));
 		return ResponseEntity.ok(customer);
 	}
@@ -320,7 +317,7 @@ public class CustomerController {
 			@PathVariable("customerId") long customerId) {
 		Map<String, Object> map = new HashMap<>();
 		if (customerService.existsbyId(customerId)) {
-			Customer existing = customerService.getCustomerById(customerId);
+			Customer existing = customerService.getCustomerById(customerId).get();
 			existing.setFullname(customer.getFullname());
 			existing.setPhone(customer.getPhone());
 			existing.setPan(customer.getPan());

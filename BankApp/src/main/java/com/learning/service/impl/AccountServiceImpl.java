@@ -27,10 +27,10 @@ public class AccountServiceImpl implements AccountService {
 		return "success";
 	}
 	
-	public boolean existByAccountNo(long accountNum) 
-	{
-		return accountRepository.existsByAccountNo(accountNum);
-	}
+//	public boolean existByAccountNo(long accountNum) 
+//	{
+//		return accountRepository.existsByAccountNo(accountNum);
+//	}
 
 	@Override
 	public Account updateAccount(Account account) {
@@ -65,9 +65,9 @@ public class AccountServiceImpl implements AccountService {
 		return accountRepository.existsById(id);
 	}
 	
-	public List<Account> findCustomerAccountById(long id)
-	{
-		return accountRepository.findCustomerAccountById(id);
-	}
+//	public List<Account> findCustomerAccountById(long id)
+//	{
+//		return accountRepository.findCustomerAccountById(id);
+//	}
 
 }

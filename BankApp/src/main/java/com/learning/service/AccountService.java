@@ -18,5 +18,5 @@ public interface AccountService {
 	public List<Account> getAllAccountAscOrder();
 	public List<Account> getAllAccountDescOrder();
 	public boolean existsById(long id);
-	public boolean existByAccountNo(long accountNum);
+//	public boolean existByAccountNo(long accountNum);
 }
